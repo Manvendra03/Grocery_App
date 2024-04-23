@@ -23,8 +23,9 @@ const CartScreen = ({navigation}) => {
   const {width, height} = useWindowDimensions();
   const [cartItem, setcartItem] = useState(cartList);
   const isFocusedScreen = useIsFocused();
+  const [openBill , setOpenBill ] = useState(false);
   const arr = [1, 23, 4, 5, 6, 6, 5, 3, 3, 2];
-
+  
   const fetchCartItem = () => {
     setcartItem(cartList);
   };
@@ -146,7 +147,12 @@ const CartScreen = ({navigation}) => {
               </TouchableOpacity>
             );
           })}
-          <View
+        
+        
+        {
+     openBill === false? <TouchableOpacity onPress={()=>{setOpenBill(true)}} style ={{height: 50,marginVertical: 10 ,borderRadius: 10 , backgroundColor: "#6DBD5F" , justifyContent: "center" , alignItems: "center"}}>
+                    <Text style ={{fontWeight: "800" , fontSize: 18 , color: "white"}}>Check Out</Text>
+            </TouchableOpacity>   : <View><View
             style={{
               height: 150,
               width: '100%',
@@ -188,10 +194,11 @@ const CartScreen = ({navigation}) => {
               <Text style={{color: 'black', fontWeight: '700'}}>200</Text>
             </View>
           </View>
-           <TouchableOpacity style ={{height: 50,marginVertical: 10 ,borderRadius: 10 , backgroundColor: "#6DBD5F" , justifyContent: "center" , alignItems: "center"}}>
-                    <Text style ={{fontWeight: "800" , fontSize: 18 , color: "white"}}>Check Out</Text>
+           <TouchableOpacity onPress={ ()=>{setOpenBill(false)}} style ={{height: 50,marginVertical: 10 ,borderRadius: 10 , backgroundColor: "#6DBD5F" , justifyContent: "center" , alignItems: "center"}}>
+                    <Text style ={{fontWeight: "800" , fontSize: 18 , color: "white"}}>Buy Now</Text>
             </TouchableOpacity> 
-           
+            </View>
+           }
           <SizedBox height={100} />
         </View>
       </ScrollView>

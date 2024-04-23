@@ -10,6 +10,7 @@ import {
   Platform,
   Dimensions,
   TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SizedBox from '../Components/SizedBox';
@@ -59,7 +60,11 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{height: '100%'}}>
+    <View style={{height: '100%'}}
+
+  // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -250}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
