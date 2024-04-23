@@ -14,6 +14,8 @@ import ItemScreen from './Screens/itemScreen';
 import ContactUsScreen from './Screens/ContactUsScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import KeyboardAvoidingComponent from './Screens/KeyboardAvoidingComponent';
+import SingleITemScreen from './Screens/SingleItemScreen';
+import ProductListScreen from './Screens/ProductListScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -25,9 +27,10 @@ const MyApp = () => {
     <NavigationContainer>
           <Stack.Navigator>
              <Stack.Screen name= 'BottomBarScreen' component={BottomBarScreen} options= { {headerShown: false}}/>
-             <Stack.Screen name= 'ItemScreen' component={itemScreen} options = {{headerShown : false}}/>
+             <Stack.Screen name= 'SingleItemScreen' component={SingleITemScreen} options = {{headerShown : false}}/>
                <Stack.Screen name= 'ProfileScreen' component={ProfileScreen}  options= { {headerShown: false}} />
-               <Stack.Screen name= 'KeyboardAvoidingComponent' component={KeyboardAvoidingComponent}  options= { {headerShown: false}} />
+               {/* <Stack.Screen name= 'KeyboardAvoidingComponent' component={KeyboardAvoidingComponent}  options= { {headerShown: false}} /> */}
+               <Stack.Screen name= 'ProductListScreen' component={ProductListScreen}  options= { {headerShown: false}} />
           
           </Stack.Navigator>
     </NavigationContainer>

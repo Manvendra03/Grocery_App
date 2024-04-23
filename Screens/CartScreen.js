@@ -78,8 +78,11 @@ const CartScreen = ({navigation}) => {
           }}>
           {arr?.map(i => {
             return (
-              <View
-                style={{
+              <TouchableOpacity
+             
+                 onPress={()=>{navigation.navigate("SingleItemScreen")}}
+             
+                 style={{
                   height: 130,
                   margin: 10,
                   // backgroundColor: '#E2FFD3',
@@ -140,7 +143,7 @@ const CartScreen = ({navigation}) => {
                   </Text>
                   <Counting />
                 </View>
-              </View>
+              </TouchableOpacity>
             );
           })}
           <View

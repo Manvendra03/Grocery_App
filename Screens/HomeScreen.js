@@ -9,6 +9,7 @@ import {
   View,
   Platform,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import SizedBox from '../Components/SizedBox';
@@ -22,6 +23,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const HomeScreen = ({navigation}) => {
+  const[searchString, SetSearchString] = useState("");
   const urii =
     'https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/sky_blue_cotton_solid_shirts_for_men_base_26_09_2023_700x933.jpg';
 
@@ -108,7 +110,16 @@ const HomeScreen = ({navigation}) => {
                 alignSelf: 'center',
                 backgroundColor: 'white',
               }}>
-              <Text style={{color: 'grey', fontWeight: '500'}}>search</Text>
+              <TextInput
+               style={{
+                height:50,
+                width:'90%',
+              }}
+                placeholder="Search..."
+                placeholderTextColor="#9E9E9E" // Placeholder text color
+                value={searchString}
+                onChangeText={(ch) => {SetSearchString(ch)}}
+              />
             </View>
           </View>
         </View>
@@ -133,7 +144,9 @@ const HomeScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {data.list1?.map(i => {
                 return (
-                  <View style={{height: 90, width: 75, alignItems: 'center'}}>
+                  <TouchableOpacity
+                   onPress={()=>{navigation.navigate("ProductListScreen")}}
+                   style={{height: 90, width: 75, alignItems: 'center'}}>
                     <View
                       style={{
                         height: 60,
@@ -150,7 +163,7 @@ const HomeScreen = ({navigation}) => {
                       />
                     </View>
                     <Text style={{fontWeight: '600'}}>Fruits</Text>
-                  </View>
+                  </TouchableOpacity>
                 );
               })}
             </ScrollView>
@@ -167,7 +180,10 @@ const HomeScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {data.list2?.map(i => {
                 return (
-                  <View
+                  <TouchableOpacity  onPress={()=>{
+                     navigation.navigate('SingleItemScreen')
+                  }}>
+                    <View
                     style={{
                       height: 200,
                       width: 150,
@@ -185,7 +201,6 @@ const HomeScreen = ({navigation}) => {
                       },
                       shadowOpacity: 0.3,
                       shadowRadius: 4.5,
-
                     }}>
                     <View
                       style={{
@@ -230,6 +245,7 @@ const HomeScreen = ({navigation}) => {
                       {'$ ' + 20}
                     </Text>
                   </View>
+                  </TouchableOpacity>
                 );
               })}
             </ScrollView>
@@ -245,6 +261,9 @@ const HomeScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {data.list2?.map(i => {
                 return (
+                  <TouchableOpacity  onPress={()=>{
+                    navigation.navigate('SingleItemScreen')
+                 }}>
                   <View
                     style={{
                       height: 200,
@@ -255,7 +274,7 @@ const HomeScreen = ({navigation}) => {
                       alignItems: 'center',
                       paddingVertical: 10,
                       elevation: 10,
-                      
+
                       shadowColor: 'black',
                       shadowOffset: {
                         width: 0,
@@ -263,7 +282,6 @@ const HomeScreen = ({navigation}) => {
                       },
                       shadowOpacity: 0.3,
                       shadowRadius: 4.5,
-
                     }}>
                     <View
                       style={{
@@ -309,6 +327,7 @@ const HomeScreen = ({navigation}) => {
                       {'$ ' + 20}
                     </Text>
                   </View>
+                 </TouchableOpacity>
                 );
               })}
             </ScrollView>
@@ -371,7 +390,3 @@ isFetched={isFetched}
 </ScrollView>
 </View> */
 }
-
-
-
-

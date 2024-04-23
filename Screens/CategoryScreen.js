@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   VirtualizedList,
 } from 'react-native';
@@ -109,6 +110,9 @@ const CategoryScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {advanceList.map(i => {
                 return (
+                  <TouchableOpacity  onPress={()=>{
+                    navigation.navigate('SingleItemScreen')
+                 }}>
                   <View
                     style={{
                       height: 200,
@@ -171,6 +175,7 @@ const CategoryScreen = ({navigation}) => {
                       {'$ ' + 20}
                     </Text>
                   </View>
+                  </TouchableOpacity>
                 );
               })}
             </ScrollView>
@@ -190,7 +195,12 @@ const CategoryScreen = ({navigation}) => {
         <View style={styles.grid}>
           {imageurls.map(items => {
             return (
-              <View style={styles.sectionCard}>
+
+              <TouchableOpacity
+                 onPress={()=>{ 
+                  navigation.navigate("ProductListScreen")
+                 }} 
+                 style={styles.sectionCard}>
                 <ImageBackground
                   source={{
                     uri: items?.img,
@@ -232,7 +242,7 @@ const CategoryScreen = ({navigation}) => {
                     </Text>
                   </LinearGradient>
                 </ImageBackground>
-              </View>
+              </TouchableOpacity>
             );
           })}
         </View>

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, Touchable, TouchableOpacity, View,Image } from 'react-native'
 
 import React from 'react'
-import SizedBox from '../Components/SizedBox'
+import SizedBox from './SizedBox'
 
 const OfferCard = () => {
   return (
