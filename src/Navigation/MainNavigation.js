@@ -2,8 +2,8 @@
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import BottomBarScreen from '../Screens/BottomBarScreen'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import BottomBarScreen from '../Screens/BottomBarScreen'
 import SingleITemScreen from '../Screens/SingleItemScreen'
 import ProfileScreen from '../Screens/ProfileScreen'
 import ProductListScreen from '../Screens/ProductListScreen'
@@ -14,6 +14,7 @@ const MainNavigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
+          
        <Stack.Screen name= 'BottomBarScreen' component={BottomBarScreen} options= { {headerShown: false}}/>
        <Stack.Screen name= 'SingleItemScreen' component={SingleITemScreen} options = {{headerShown : false}}/>
          <Stack.Screen name= 'ProfileScreen' component={ProfileScreen}  options= { {headerShown: false}} />
