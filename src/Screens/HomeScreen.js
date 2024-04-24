@@ -128,6 +128,11 @@ const HomeScreen = ({navigation}) => {
           </View>
         </View>
 
+          <SizedBox height={20} />
+  <View style ={{   height: 200, marginHorizontal:20 ,alignItems: "center", paddingHorizontal:"auto"}}>
+        <OfferCard/>
+    </View>       
+        
         <View
           style={{
             // paddingTop: 20,
@@ -135,10 +140,6 @@ const HomeScreen = ({navigation}) => {
             paddingHorizontal: 20,
             alignItems: 'flex-start',
           }}>
-          <SizedBox height={10} />
-
-          <SizedBox height={10} />
-          <OfferCard />
           <SizedBox height={25} />
           <View style={{height: 90}}>
             {/* <SizedBox height={6}></SizedBox> */}
