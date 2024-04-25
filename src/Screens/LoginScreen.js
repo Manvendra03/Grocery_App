@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import MyTextInput from '../Components/TextInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NavigationRouteContext } from '@react-navigation/native';
 
 const LoginScreen = ({navigation}) => {
   return (
@@ -23,12 +24,22 @@ const LoginScreen = ({navigation}) => {
         
         paddingHorizontal: 20,
       }}>
-      <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{position: "absolute" , top: Platform.OS === 'ios'? 30 : 30 , left: 10}}>
+      {/* <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{position: "absolute" , top: Platform.OS === 'ios'? 30 : 30 , left: 10}}>
       <Image 
           source={require('../assets/back.png')}
           style={{height: 25, width : 25}}
         />
+      </TouchableOpacity> */}
+      
+      <TouchableOpacity 
+         onPress={()=>{ navigation.navigate("BottomBarScreen")}}
+      
+      style ={{borderRadius: 10,padding: 8 , borderWidth: 2, borderColor: "black" , width: 100 , height: 40 , position: "absolute" , top: 30 , right: 30}}>
+          <Text>Skip for now </Text>
       </TouchableOpacity>
+      
+
+
       <Text
         style={{
           fontSize: 22,

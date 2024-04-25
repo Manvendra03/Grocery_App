@@ -1,12 +1,13 @@
 import {StyleSheet, Text, View,TextInput, Platform} from 'react-native';
 import React from 'react';
 
-const MyTextInput = ({style,placeholder,inputMode,maxLength,secureTextEntry,variable, setVariable , obsecureText}) => {
+const MyTextInput = ({style,placeholder,inputMode,maxLength,secureTextEntry,variable, editable,setVariable , obsecureText}) => {
   return (
       <TextInput
         cursorColor={'black'}
         selectionColor={'black'}
         placeholder={placeholder ?? ''} 
+        editable ={editable ?? true}
         inputMode= {inputMode??'default'}
         secureTextEntry={obsecureText??false}
         onChangeText={(text)=>{

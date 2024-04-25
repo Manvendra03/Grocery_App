@@ -54,6 +54,7 @@ const OfferCard = () => {
   circleLoop
   resizeMethod={'resize'}
   resizeMode={'cover'}
+  autoplayInterval = {2000}
   paginationBoxStyle={{
     position: "absolute",
     bottom: 0,

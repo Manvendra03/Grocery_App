@@ -17,15 +17,31 @@ const ProfileScreen = () => {
 
   const [showCard, setShowCard] = useState(false);
   const [options, setoption] = useState([
-    {icon: require('../assets/profile_icons/user-2.png'), tittle: 'Profile'},
+    {
+      icon: require('../assets/profile_icons/user-2.png'),
+      tittle: 'Profile',
+      functionn: () => {
+        setShowCard(true);
+      },
+    },
     {icon: require('../assets/profile_icons/heart.png'), tittle: 'My WishList'},
     {
       icon: require('../assets/profile_icons/shopping-cart.png'),
       tittle: 'My Cart',
     },
-    {icon: require('../assets/profile_icons/bar-chart.png'), tittle: 'Stats'},
+    {
+      icon: require('../assets/profile_icons/bar-chart.png'),
+      tittle: 'Order History',
+    },
     {icon: require('../assets/profile_icons/setting.png'), tittle: 'setting'},
-    {icon: require('../assets/profile_icons/logout.png'), tittle: 'Log out'},
+    {
+      icon: require('../assets/profile_icons/logout.png'),
+      tittle: 'Log out',
+      functionn: () => {
+        navigation.goBack();
+        navigation.goBack();
+      },
+    },
   ]);
   return (
     <View style={{height: '100%', width: '100%'}}>
@@ -103,7 +119,8 @@ const ProfileScreen = () => {
             <ProfileOptions
               image={option?.icon}
               tittle={option?.tittle}
-              setShowCardd={setShowCard}
+              // setShowCardd={setShowCard}
+              onTap={option?.functionn}
             />
           );
         })}

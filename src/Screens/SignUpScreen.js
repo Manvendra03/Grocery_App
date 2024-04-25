@@ -174,7 +174,10 @@ const SignUpScreen = ({navigation}) => {
           setVariable={() => {}}
           style={{width: "90%", }}
         />
-        <TouchableOpacity style={{alignSelf:"flex-end", marginRight: 20}}>
+        <TouchableOpacity 
+        
+         
+        style={{alignSelf:"flex-end", marginRight: 20}}>
           <Text
             style={{
               fontSize: 12,
@@ -187,7 +190,9 @@ const SignUpScreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("CompleteProfileScreen")
+          }}
           style={{
             height: 35,
             borderRadius: 10,
@@ -201,7 +206,9 @@ const SignUpScreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity  
-          onPress={()=>{setVerifyOTP(false)}}
+
+
+        onPress={()=>{setVerifyOTP(false)}}
         style ={{height: 25,justifyContent :"center", alignItems:"center" ,width:25 , borderWidth: 2 , position: "absolute",top: 10,right:10, borderRadius: 20}}>
         <Image 
                source={require("../assets/close.png")}

@@ -2,13 +2,11 @@ import { StyleSheet, Text, View ,Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 
 const ProfileOptions = (
-    {image,tittle , setShowCardd}) => {
+    {image,tittle , setShowCardd , onTap}) => {
 
   return (
 <View >
-    <TouchableOpacity  onPress={()=>{
-      setShowCardd(true);
-    }}    style ={{height: 40  ,marginHorizontal: 5 , marginLeft: 35 , flexDirection:"row" , alignItems:"center" } }>
+    <TouchableOpacity  onPress={onTap}    style ={{height: 40  ,marginHorizontal: 5 , marginLeft: 35 , flexDirection:"row" , alignItems:"center" } }>
         
     <Image
           source={image}
