@@ -10,6 +10,7 @@ import SingleITemScreen from '../Screens/SingleItemScreen'
 import ProfileScreen from '../Screens/ProfileScreen'
 import ProductListScreen from '../Screens/ProductListScreen'
 import CompleteProfileScreen from '../Screens/CompleteProfileScreen';
+import OrderHistory from '../Screens/OrderHistory';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ const LoginNavigation = () => {
          <Stack.Screen name= 'ProfileScreen' component={ProfileScreen}  options= { {headerShown: false}} />
           <Stack.Screen name= 'ProductListScreen' component={ProductListScreen}  options= { {headerShown: false}} />
           <Stack.Screen name= 'CompleteProfileScreen' component={CompleteProfileScreen}  options= { {headerShown: false}} />
+          <Stack.Screen name= 'OrderHistoryScreen' component={OrderHistory}  options= { {headerShown: false}} />
   
      
         </Stack.Navigator>

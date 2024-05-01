@@ -6,6 +6,7 @@ import LogInScreen from './src/Screens/LoginScreen';
 import SignUpScreen from './src/Screens/SignUpScreen';
 import LoginNavigation from './src/Navigation/LoginNavigation';
 import CompleteProfileScreen from './src/Screens/CompleteProfileScreen';
+import ProfileScreen from './src/Screens/ProfileScreen';
 
 const MyApp = () => {
   
@@ -14,6 +15,7 @@ const MyApp = () => {
         {/* <MainNavigation/> */}
         {/* <CompleteProfileScreen/> */}
         <LoginNavigation/>
+        
      </SafeAreaView>
   );
 };

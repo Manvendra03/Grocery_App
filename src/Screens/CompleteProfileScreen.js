@@ -48,7 +48,7 @@ const CompleteProfileScreen = () => {
               editable={false}
               style={{borderColor: '#BABABA'}}
               // obsecureText={true}
-              setVariable={() => {}}></MyTextInput>
+              setVariable={() => {}}/>
 
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>Email Address</Text>
