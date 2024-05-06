@@ -24,7 +24,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const HomeScreen = ({navigation}) => {
-  const[searchString, SetSearchString] = useState("");
+  const [searchString, SetSearchString] = useState('');
   const urii =
     'https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/sky_blue_cotton_solid_shirts_for_men_base_26_09_2023_700x933.jpg';
 
@@ -32,6 +32,87 @@ const HomeScreen = ({navigation}) => {
   //           'https://i.pngimg.me/thumb/f/720/comhiclipartdeedb.jpg';
   const [isFetched, setFetched] = useState(false);
   const [data, setData] = useState({list1: [], list2: [], list3: []});
+
+  const [arrivals, setArrivals] = useState([
+    {
+      img: 'https://www.bigbasket.com/media/uploads/p/xxl/40015993_11-uncle-chips-spicy-treat.jpg',
+      name: 'Uncle Chips',
+      price: '210',
+    },
+    {
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kQFwtv72JbqerZzH43IvxOn9uSA6dSEgoDs-h6KlUA&s',
+      name: 'Ruffles Chips',
+      price: '250',
+    },
+    {
+      img: 'https://i5.walmartimages.com/seo/Lay-s-Potato-Chips-Limon-Flavor-7-75-oz-Bag_5f090e6d-fd82-4f8a-99a3-dc41d556211e.6dcea6a65421632ac8b8621c759a61a5.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF',
+      name: 'Lays Chips',
+      price: '210',
+    },
+
+    {
+      img: 'https://5.imimg.com/data5/SELLER/Default/2021/1/RV/HV/BH/121836789/bourbon-biscuit.jpg',
+      name: 'bourbon',
+      price: 300,
+    },
+    {
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd_9ZinS_cb64Gj7OnCSNEFATpQAjQdWnLABvCM2yijw&s',
+      name: 'Marie Gold',
+      price: 450,
+    },
+  ]);
+
+  const [imageurls, setimageurls] = useState([
+    {
+      name: 'fruits',
+      img: 'https://static.toiimg.com/photo/105938708.cms',
+    },
+    {
+      name: 'vegggies',
+      img: 'https://c.ndtvimg.com/2022-10/d75l0jpo_green-vegetables-plant-diet_625x300_16_October_22.jpg',
+    },
+    {
+      name: 'snacks',
+      img: 'https://images-cdn.ubuy.co.in/65cb168db14ac961f949efe4-fun-flavors-box-favorite-american-snack.jpg',
+    },
+    {
+      name: 'food',
+      img: 'https://media.self.com/photos/622912847b959736301bfb91/master/pass/GettyImages-1301412050.jpg',
+    },
+    {
+      name: 'masala',
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHFVKTqhbF7IdO8OVAejT6vS4iEGsH2hIcLDySVRtVGw&s',
+    },
+    {
+      name: 'toppings',
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxW3VLmcAKhUYSI_qHa7Td8R9dFf1jsGmcNdgzXWxuqQ&s',
+    },
+  ]);
+
+
+  const [fruits, setFruits] = useState([
+    {
+      img: 'https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_1280.jpg',
+      name: 'Apple',
+      price: '210 /Kg',
+    },
+    {
+      img: "https://grosav.com/assets/img/items/15985275313rtzeTRNjZ.jpg",
+      name: 'Banana',
+      price: '20 / KG',
+    },
+    {
+      img: 'https://www.mashed.com/img/gallery/apparently-one-pineapple-is-not-a-single-fruit-heres-why/intro-1694898682.jpg',
+      name: 'PineApple',
+      price: '210 / 1psc',
+    },
+
+    {
+      img: 'https://qph.cf2.quoracdn.net/main-qimg-fc794ca1a36edd0a822b67e7a3cbe7df-lq',
+      name: 'Strawberrys',
+      price: '120 / KG',
+    },
+  ]);
 
   const fetchAPI = async () => {
     try {
@@ -60,9 +141,10 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   return (
-    <View style={{height: '100%'}}
-  // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-  // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -250}
+    <View
+      style={{height: '100%'}}
+      // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      // keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -250}
     >
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -115,24 +197,32 @@ const HomeScreen = ({navigation}) => {
                 backgroundColor: 'white',
               }}>
               <TextInput
-               style={{
-                height:50,
-                width:'90%',
-              }}
+                style={{
+                  height: 50,
+                  width: '90%',
+                }}
                 placeholder="Search..."
                 placeholderTextColor="#9E9E9E" // Placeholder text color
                 value={searchString}
-                onChangeText={(ch) => {SetSearchString(ch)}}
+                onChangeText={ch => {
+                  SetSearchString(ch);
+                }}
               />
             </View>
           </View>
         </View>
 
-          <SizedBox height={20} />
-  <View style ={{   height: 200, marginHorizontal:20 ,alignItems: "center", paddingHorizontal:"auto"}}>
-        <OfferCard/>
-    </View>       
-        
+        <SizedBox height={20} />
+        <View
+          style={{
+            height: 200,
+            marginHorizontal: 20,
+            alignItems: 'center',
+            paddingHorizontal: 'auto',
+          }}>
+          <OfferCard />
+        </View>
+
         <View
           style={{
             // paddingTop: 20,
@@ -147,11 +237,13 @@ const HomeScreen = ({navigation}) => {
               horizontal={true}
               style={{flexDirection: 'row', direction: 'ltr'}}
               showsHorizontalScrollIndicator={false}>
-              {data.list1?.map(i => {
+              {imageurls?.map(i => {
                 return (
                   <TouchableOpacity
-                   onPress={()=>{navigation.navigate("ProductListScreen")}}
-                   style={{height: 90, width: 75, alignItems: 'center'}}>
+                    onPress={() => {
+                      navigation.navigate('ProductListScreen');
+                    }}
+                    style={{height: 90, width: 75, alignItems: 'center'}}>
                     <View
                       style={{
                         height: 60,
@@ -162,12 +254,12 @@ const HomeScreen = ({navigation}) => {
                       }}>
                       <Image
                         source={{
-                          uri: 'https://www.healthyeating.org/images/default-source/home-0.0/nutrition-topics-2.0/general-nutrition-wellness/2-2-2-3foodgroups_fruits_detailfeature.jpg?sfvrsn=64942d53_4',
+                          uri: i.img,
                         }}
                         style={{height: 60, width: 60, borderRadius: 30}}
                       />
                     </View>
-                    <Text style={{fontWeight: '600'}}>Fruits</Text>
+                    <Text style={{fontWeight: '600' ,color: "black"}}>{i.name}</Text>
                   </TouchableOpacity>
                 );
               })}
@@ -183,73 +275,74 @@ const HomeScreen = ({navigation}) => {
               horizontal={true}
               style={{flexDirection: 'row', direction: 'ltr'}}
               showsHorizontalScrollIndicator={false}>
-              {data.list2?.map(i => {
+              {arrivals?.map(i => {
                 return (
-                  <TouchableOpacity  onPress={()=>{
-                     navigation.navigate('SingleItemScreen')
-                  }}>
-                    <View
-                    style={{
-                      height: 200,
-                      width: 150,
-                      backgroundColor: 'white',
-                      borderRadius: 10,
-                      marginHorizontal: 6,
-                      alignItems: 'center',
-                      paddingVertical: 10,
-                      elevation: 10,
-
-                      shadowColor: 'black',
-                      shadowOffset: {
-                        width: 0,
-                        height: 7,
-                      },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 4.5,
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SingleItemScreen');
                     }}>
                     <View
                       style={{
-                        height: 120,
-                        width: 120,
-                        backgroundColor: 'grey',
-                        marginBottom: 5,
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
+                        height: 200,
+                        width: 150,
+                        backgroundColor: 'white',
+                        borderRadius: 10,
+                        marginHorizontal: 6,
+                        alignItems: 'center',
+                        paddingVertical: 10,
+                        elevation: 10,
+
+                        shadowColor: 'black',
+                        shadowOffset: {
+                          width: 0,
+                          height: 7,
+                        },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4.5,
                       }}>
-                      <Image
-                        source={{
-                          uri: 'https://lh3.googleusercontent.com/proxy/I4O9fSq4Yc0IImGGpHJrvUX-HAqLkbnI75hGL_X7l7UQukhExMMFw0H1FiK6kEilbeXzrYDBHildb3hGfaSAzhbJbgkj5h8D0_b-HAkSTesqoYoFiQ',
-                        }}
+                      <View
                         style={{
                           height: 120,
                           width: 120,
                           backgroundColor: 'grey',
+                          marginBottom: 5,
                           borderTopLeftRadius: 10,
                           borderTopRightRadius: 10,
-                        }}
-                      />
+                        }}>
+                        <Image
+                          source={{
+                            uri: i.img,
+                          }}
+                          style={{
+                            height: 120,
+                            width: 120,
+                            backgroundColor: 'grey',
+                            borderTopLeftRadius: 10,
+                            borderTopRightRadius: 10,
+                          }}
+                        />
+                      </View>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          width: 120,
+                          fontWeight: '500',
+                          color: 'black',
+                          alignSelf: 'center',
+                          textAlign: 'center',
+                        }}>
+                        {i.name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontWeight: 'bold',
+                          margin: 5,
+                          alignItems: 'center',
+                        }}>
+                        {'$ ' + i.price}
+                      </Text>
                     </View>
-                    <Text
-                      numberOfLines={2}
-                      style={{
-                        width: 120,
-                        fontWeight: '500',
-                        color: 'black',
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                      }}>
-                      Mustard Oil
-                    </Text>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontWeight: 'bold',
-                        margin: 5,
-                        alignItems: 'center',
-                      }}>
-                      {'$ ' + 20}
-                    </Text>
-                  </View>
                   </TouchableOpacity>
                 );
               })}
@@ -264,75 +357,76 @@ const HomeScreen = ({navigation}) => {
               horizontal={true}
               style={{flexDirection: 'row', direction: 'ltr'}}
               showsHorizontalScrollIndicator={false}>
-              {data.list2?.map(i => {
+              {fruits?.map(i => {
                 return (
-                  <TouchableOpacity  onPress={()=>{
-                    navigation.navigate('SingleItemScreen')
-                 }}>
-                  <View
-                    style={{
-                      height: 200,
-                      width: 150,
-                      backgroundColor: 'white',
-                      borderRadius: 10,
-                      marginHorizontal: 6,
-                      alignItems: 'center',
-                      paddingVertical: 10,
-                      elevation: 10,
-
-                      shadowColor: 'black',
-                      shadowOffset: {
-                        width: 0,
-                        height: 7,
-                      },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 4.5,
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('SingleItemScreen');
                     }}>
                     <View
                       style={{
-                        height: 120,
-                        width: 120,
-                        backgroundColor: 'grey',
-                        marginBottom: 5,
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
+                        height: 200,
+                        width: 150,
+                        backgroundColor: 'white',
+                        borderRadius: 10,
+                        marginHorizontal: 6,
+                        alignItems: 'center',
+                        paddingVertical: 10,
+                        elevation: 10,
+
+                        shadowColor: 'black',
+                        shadowOffset: {
+                          width: 0,
+                          height: 7,
+                        },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4.5,
                       }}>
-                      <Image
-                        source={{
-                          //  uri: 'https://lh3.googleusercontent.com/proxy/I4O9fSq4Yc0IImGGpHJrvUX-HAqLkbnI75hGL_X7l7UQukhExMMFw0H1FiK6kEilbeXzrYDBHildb3hGfaSAzhbJbgkj5h8D0_b-HAkSTesqoYoFiQ'
-                          uri: 'https://images.immediate.co.uk/production/volatile/sites/30/2017/01/Bunch-of-bananas-67e91d5.jpg?quality=90&resize=440,400',
-                        }}
+                      <View
                         style={{
                           height: 120,
                           width: 120,
                           backgroundColor: 'grey',
+                          marginBottom: 5,
                           borderTopLeftRadius: 10,
                           borderTopRightRadius: 10,
-                        }}
-                      />
+                        }}>
+                        <Image
+                          source={{
+                            uri: i.img
+                          }}
+
+                          style={{
+                            height: 120,
+                            width: 120,
+                            backgroundColor: 'grey',
+                            borderTopLeftRadius: 10,
+                            borderTopRightRadius: 10,
+                          }}
+                        />
+                      </View>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          width: 120,
+                          fontWeight: '500',
+                          color: 'black',
+                          alignSelf: 'center',
+                          textAlign: 'center',
+                        }}>
+                        {i.name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontWeight: 'bold',
+                          margin: 5,
+                          alignItems: 'center',
+                        }}>
+                        {'$ ' + i.price}
+                      </Text>
                     </View>
-                    <Text
-                      numberOfLines={2}
-                      style={{
-                        width: 120,
-                        fontWeight: '500',
-                        color: 'black',
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                      }}>
-                      Mustard Oil
-                    </Text>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontWeight: 'bold',
-                        margin: 5,
-                        alignItems: 'center',
-                      }}>
-                      {'$ ' + 20}
-                    </Text>
-                  </View>
-                 </TouchableOpacity>
+                  </TouchableOpacity>
                 );
               })}
             </ScrollView>

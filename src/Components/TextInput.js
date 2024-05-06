@@ -9,7 +9,7 @@ const MyTextInput = ({style,placeholder,inputMode,maxLength,secureTextEntry,vari
         placeholder={placeholder ?? ''} 
         editable ={editable ?? true}
         inputMode= {inputMode??'default'}
-        placeholderTextColor= {placeholderTextColorr}
+        placeholderTextColor= {"black"}
         secureTextEntry={obsecureText??false}
         onChangeText={(text)=>{
           setVariable(text)

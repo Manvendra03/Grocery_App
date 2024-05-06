@@ -19,7 +19,31 @@ import axios from 'axios';
 import {SafeAreaView} from 'react-native-safe-area-context';
 const CategoryScreen = ({navigation}) => {
   const [isFetched, setFetched] = useState(false);
-
+  
+  const [arrivals,setArrivals] = useState([
+    {
+      img: "https://www.bigbasket.com/media/uploads/p/xxl/40015993_11-uncle-chips-spicy-treat.jpg",name :"Uncle Chips", price: "210"
+    },
+    {
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kQFwtv72JbqerZzH43IvxOn9uSA6dSEgoDs-h6KlUA&s",name :"Ruffles Chips", price: "250"
+    },
+    {
+      img: "https://i5.walmartimages.com/seo/Lay-s-Potato-Chips-Limon-Flavor-7-75-oz-Bag_5f090e6d-fd82-4f8a-99a3-dc41d556211e.6dcea6a65421632ac8b8621c759a61a5.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",name :"Lays Chips", price: "210"
+    },
+    
+    {
+      img: "https://5.imimg.com/data5/SELLER/Default/2021/1/RV/HV/BH/121836789/bourbon-biscuit.jpg",
+      name: "bourbon",
+      price: 300,
+    }
+,
+    {
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd_9ZinS_cb64Gj7OnCSNEFATpQAjQdWnLABvCM2yijw&s",
+      name: "Marie Gold",
+      price: 450
+    }
+    
+  ]);
   const [imageurls, setimageurls] = useState([
     {
       name: 'fruits',
@@ -46,8 +70,6 @@ const CategoryScreen = ({navigation}) => {
       img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxW3VLmcAKhUYSI_qHa7Td8R9dFf1jsGmcNdgzXWxuqQ&s',
     },
   ]);
-
-  const [advanceList, setAdvanceList] = useState([]);
 
   const getAdvanceList = async () => {
     try {
@@ -108,7 +130,7 @@ const CategoryScreen = ({navigation}) => {
               horizontal={true}
               style={{flexDirection: 'row', direction: 'ltr'}}
               showsHorizontalScrollIndicator={false}>
-              {advanceList.map(i => {
+              {arrivals.map(i => {
                 return (
                   <TouchableOpacity  onPress={()=>{
                     navigation.navigate('SingleItemScreen')
@@ -143,7 +165,7 @@ const CategoryScreen = ({navigation}) => {
                       }}>
                       <Image
                         source={{
-                          uri: 'https://lh3.googleusercontent.com/proxy/I4O9fSq4Yc0IImGGpHJrvUX-HAqLkbnI75hGL_X7l7UQukhExMMFw0H1FiK6kEilbeXzrYDBHildb3hGfaSAzhbJbgkj5h8D0_b-HAkSTesqoYoFiQ',
+                          uri: i?.img,
                         }}
                         style={{
                           height: 120,
@@ -163,7 +185,7 @@ const CategoryScreen = ({navigation}) => {
                         alignSelf: 'center',
                         textAlign: 'center',
                       }}>
-                      Mustard Oil
+                      {i.name}
                     </Text>
                     <Text
                       style={{
@@ -172,7 +194,7 @@ const CategoryScreen = ({navigation}) => {
                         margin: 5,
                         alignItems: 'center',
                       }}>
-                      {'$ ' + 20}
+                      {'$ ' + i.price}
                     </Text>
                   </View>
                   </TouchableOpacity>

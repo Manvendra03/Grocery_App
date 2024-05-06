@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}) => {
       <TouchableOpacity 
          onPress={()=>{ navigation.navigate("BottomBarScreen")}}
       
-      style ={{borderRadius: 10,padding: 8 , borderWidth: 2, borderColor: "black" , width: 100 , height: 40 , position: "absolute" , top: 30 , right: 30}}>
+      style ={{borderRadius: 10,padding: 8 , borderWidth: 2,backgroundColor:"green6+", borderColor: "black" , width: 100 , height: 40 , position: "absolute" , top: 30 , right: 30}}>
           <Text>Skip for now </Text>
       </TouchableOpacity>
       
