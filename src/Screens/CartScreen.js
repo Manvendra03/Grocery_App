@@ -29,6 +29,34 @@ const CartScreen = ({navigation}) => {
   const fetchCartItem = () => {
     setcartItem(cartList);
   };
+   
+  
+  const [fruits, setFruits] = useState([
+    {
+      img: 'https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_1280.jpg',
+      name: 'Apple',
+      price: '210 /Kg',
+    },
+    {
+      img: "https://grosav.com/assets/img/items/15985275313rtzeTRNjZ.jpg",
+      name: 'Banana',
+      price: '20 / KG',
+    },
+    // {
+    //   img: 'https://www.mashed.com/img/gallery/apparently-one-pineapple-is-not-a-single-fruit-heres-why/intro-1694898682.jpg',
+    //   name: 'PineApple',
+    //   price: '210 / 1psc',
+    // },
+
+    {
+      img: 'https://qph.cf2.quoracdn.net/main-qimg-fc794ca1a36edd0a822b67e7a3cbe7df-lq',
+      name: 'Strawberrys',
+      price: '120 / KG',
+    },
+  ]);
+
+
+
 
   isFocusedScreen
     ? () => {
@@ -77,7 +105,7 @@ const CartScreen = ({navigation}) => {
             borderRadius: 20,
             marginTop: Platform.OS === 'ios' ? -35 : -40,
           }}>
-          {arr?.map(i => {
+          {fruits?.map(i => {
             return (
               <TouchableOpacity
              
@@ -103,7 +131,7 @@ const CartScreen = ({navigation}) => {
                   }}>
                   <Image
                     source={{
-                      uri: 'https://cdn.britannica.com/24/174524-050-A851D3F2/Oranges.jpg',
+                      uri: i.img,
                     }}
                     style={{
                       height: '100%',
@@ -121,7 +149,7 @@ const CartScreen = ({navigation}) => {
                       color: 'black',
                       lineHeight: 25,
                     }}>
-                    Fresh Oranges
+                    {i.name}
                   </Text>
                   <Text
                     style={{
@@ -130,7 +158,7 @@ const CartScreen = ({navigation}) => {
                       color: 'grey',
                       lineHeight: 20,
                     }}>
-                    Price : $20
+                    Price : {i.price}
                   </Text>
                   <Text
                     style={{
@@ -140,7 +168,7 @@ const CartScreen = ({navigation}) => {
                       lineHeight: 20,
                       marginBottom: 10,
                     }}>
-                    Weight : 2Kg
+                    Weight : 10Kg
                   </Text>
                   <Counting />
                 </View>

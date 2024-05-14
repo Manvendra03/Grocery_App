@@ -13,6 +13,9 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+
 import SizedBox from '../Components/SizedBox';
 import OfferCard from '../Components/OfferCard';
 import ItemCard from '../Components/ItemCard';
@@ -20,17 +23,15 @@ import ItemCard from '../Components/ItemCard';
 import axios from 'axios';
 import AppBar from '../Components/AppBar';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import NewItemCard from '../Components/NewItemCard';
+import {base_url} from '../API/BaseUrl';
 
 export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const HomeScreen = ({navigation}) => {
   const [searchString, SetSearchString] = useState('');
-  const urii =
-    'https://www.beyoung.in/api/cache/catalog/products/new_checked_shirt_image_9_12_2022/sky_blue_cotton_solid_shirts_for_men_base_26_09_2023_700x933.jpg';
 
-  // const urii =
-  //           'https://i.pngimg.me/thumb/f/720/comhiclipartdeedb.jpg';
-  const [isFetched, setFetched] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({list1: [], list2: [], list3: []});
 
   const [arrivals, setArrivals] = useState([
@@ -62,7 +63,7 @@ const HomeScreen = ({navigation}) => {
     },
   ]);
 
-  const [imageurls, setimageurls] = useState([
+  const [catList, setCatList] = useState([
     {
       name: 'fruits',
       img: 'https://static.toiimg.com/photo/105938708.cms',
@@ -89,7 +90,6 @@ const HomeScreen = ({navigation}) => {
     },
   ]);
 
-
   const [fruits, setFruits] = useState([
     {
       img: 'https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_1280.jpg',
@@ -97,7 +97,7 @@ const HomeScreen = ({navigation}) => {
       price: '210 /Kg',
     },
     {
-      img: "https://grosav.com/assets/img/items/15985275313rtzeTRNjZ.jpg",
+      img: 'https://grosav.com/assets/img/items/15985275313rtzeTRNjZ.jpg',
       name: 'Banana',
       price: '20 / KG',
     },
@@ -116,22 +116,28 @@ const HomeScreen = ({navigation}) => {
 
   const fetchAPI = async () => {
     try {
-      var response = await axios.get('https://fakestoreapi.com/products');
+      console.log('calling -------- >');
+      var response = await axios.get(
+        'https://nbp8qssq-4090.inc1.devtunnels.ms/api/homepage',
+      );
+      // console.log(response.data);
+      const catList = response.data.categories;
 
-      let arr = response?.data;
+      if(response.status != 200)
+        {
+          console.log("/////////////////////////////////////////////////////")
+          console.log("/////////////////////////////////////////////////////")
+          console.log("/////////////////////////////////////////////////////")
+          console.log("Wrong status code !!!!!!!!"+response.status);
+                
+        }
 
-      const list1 = arr.slice(0, 9);
-      const list2 = arr.slice(10, 20);
-      let tempData = {list1: [], list2: [], list3: []};
-      tempData.list1 = list1;
-      tempData.list2 = list2;
-      tempData.list3 = list1;
-
-      setData(tempData);
-
-      await delay(1500);
-
-      setFetched(true);
+        
+      setCatList(catList);
+      setArrivals(response.data.items_list1);
+      setFruits(response.data.items_list2);
+      console.log('setting Ture -------- >');
+      setIsLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -140,6 +146,7 @@ const HomeScreen = ({navigation}) => {
     fetchAPI();
   }, []);
 
+  const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
   return (
     <View
       style={{height: '100%'}}
@@ -231,35 +238,76 @@ const HomeScreen = ({navigation}) => {
             alignItems: 'flex-start',
           }}>
           <SizedBox height={25} />
-          <View style={{height: 90}}>
+          <View
+            style={{height: 120, alignItems: 'center', alignItems: 'center'}}>
             {/* <SizedBox height={6}></SizedBox> */}
             <ScrollView
               horizontal={true}
-              style={{flexDirection: 'row', direction: 'ltr'}}
+              style={{flexDirection: 'row', direction: 'ltr', height: 90}}
               showsHorizontalScrollIndicator={false}>
-              {imageurls?.map(i => {
+              {catList?.map(i => {
+                const id = i.category_id;
                 return (
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('ProductListScreen');
+                      console.log('>>>>' + id);
+                      navigation.navigate('ProductListScreen', {
+                        cat_name: i.category_name,
+                      });
                     }}
-                    style={{height: 90, width: 75, alignItems: 'center'}}>
+                    style={{
+                      height: 90,
+                      width: 75,
+                      marginHorizontal: 8,
+                      alignItems: 'center',
+                    }}>
                     <View
                       style={{
                         height: 60,
                         width: 60,
                         marginBottom: 6,
-                        backgroundColor: 'white',
+                        // backgroundColor: 'white',
+                        alignItems: 'center',
                         borderRadius: 30,
                       }}>
-                      <Image
-                        source={{
-                          uri: i.img,
+                      <ShimmerPlaceholder
+                        style={{
+                          height: 60,
+                          width: 60,
+                          marginBottom: 6,
+                          backgroundColor: 'white',
+                          borderRadius: 30,
+                          marginHorizontal: 10,
                         }}
-                        style={{height: 60, width: 60, borderRadius: 30}}
-                      />
+                        duration={1500}
+                        visible={!isLoading}>
+                        <Image
+                          source={{
+                            uri: i.image_url,
+                          }}
+                          style={{height: 60, width: 60, borderRadius: 30}}
+                        />
+                      </ShimmerPlaceholder>
                     </View>
-                    <Text style={{fontWeight: '600' ,color: "black"}}>{i.name}</Text>
+                    {isLoading ? (
+                      <View
+                        style={{
+                          height: 12,
+                          width: 50,
+                          backgroundColor: '#BABABA',
+                        }}
+                      />
+                    ) : (
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          fontWeight: '600',
+                          color: 'black',
+                          overflow: 'hidden',
+                        }}>
+                        {i.category_name}
+                      </Text>
+                    )}
                   </TouchableOpacity>
                 );
               })}
@@ -277,73 +325,34 @@ const HomeScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {arrivals?.map(i => {
                 return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('SingleItemScreen');
-                    }}>
-                    <View
-                      style={{
-                        height: 200,
-                        width: 150,
-                        backgroundColor: 'white',
-                        borderRadius: 10,
-                        marginHorizontal: 6,
-                        alignItems: 'center',
-                        paddingVertical: 10,
-                        elevation: 10,
+                  <ShimmerPlaceholder
+                    style={{
+                      height: 200,
+                      width: 150,
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      marginHorizontal: 10,
+                      alignItems: 'center',
+                      // paddingVertical: 10,
+                      elevation: 10,
 
-                        shadowColor: 'black',
-                        shadowOffset: {
-                          width: 0,
-                          height: 7,
-                        },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 4.5,
-                      }}>
-                      <View
-                        style={{
-                          height: 120,
-                          width: 120,
-                          backgroundColor: 'grey',
-                          marginBottom: 5,
-                          borderTopLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                        }}>
-                        <Image
-                          source={{
-                            uri: i.img,
-                          }}
-                          style={{
-                            height: 120,
-                            width: 120,
-                            backgroundColor: 'grey',
-                            borderTopLeftRadius: 10,
-                            borderTopRightRadius: 10,
-                          }}
-                        />
-                      </View>
-                      <Text
-                        numberOfLines={2}
-                        style={{
-                          width: 120,
-                          fontWeight: '500',
-                          color: 'black',
-                          alignSelf: 'center',
-                          textAlign: 'center',
-                        }}>
-                        {i.name}
-                      </Text>
-                      <Text
-                        style={{
-                          color: 'black',
-                          fontWeight: 'bold',
-                          margin: 5,
-                          alignItems: 'center',
-                        }}>
-                        {'$ ' + i.price}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+                      shadowColor: 'black',
+                      shadowOffset: {
+                        width: 0,
+                        height: 7,
+                      },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 4.5,
+                    }}
+                    duration={1500}
+                    visible={!isLoading}>
+                    <NewItemCard
+                      image_url={i.image_url}
+                      name={i.item_name}
+                      price={i.price}
+                      id={i.item_id}
+                    />
+                  </ShimmerPlaceholder>
                 );
               })}
             </ScrollView>
@@ -359,74 +368,34 @@ const HomeScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {fruits?.map(i => {
                 return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('SingleItemScreen');
-                    }}>
-                    <View
-                      style={{
-                        height: 200,
-                        width: 150,
-                        backgroundColor: 'white',
-                        borderRadius: 10,
-                        marginHorizontal: 6,
-                        alignItems: 'center',
-                        paddingVertical: 10,
-                        elevation: 10,
+                  <ShimmerPlaceholder
+                    style={{
+                      height: 200,
+                      width: 150,
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      marginHorizontal: 6,
+                      alignItems: 'center',
+                      // paddingVertical: 10,
+                      elevation: 10,
 
-                        shadowColor: 'black',
-                        shadowOffset: {
-                          width: 0,
-                          height: 7,
-                        },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 4.5,
-                      }}>
-                      <View
-                        style={{
-                          height: 120,
-                          width: 120,
-                          backgroundColor: 'grey',
-                          marginBottom: 5,
-                          borderTopLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                        }}>
-                        <Image
-                          source={{
-                            uri: i.img
-                          }}
-
-                          style={{
-                            height: 120,
-                            width: 120,
-                            backgroundColor: 'grey',
-                            borderTopLeftRadius: 10,
-                            borderTopRightRadius: 10,
-                          }}
-                        />
-                      </View>
-                      <Text
-                        numberOfLines={2}
-                        style={{
-                          width: 120,
-                          fontWeight: '500',
-                          color: 'black',
-                          alignSelf: 'center',
-                          textAlign: 'center',
-                        }}>
-                        {i.name}
-                      </Text>
-                      <Text
-                        style={{
-                          color: 'black',
-                          fontWeight: 'bold',
-                          margin: 5,
-                          alignItems: 'center',
-                        }}>
-                        {'$ ' + i.price}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+                      shadowColor: 'black',
+                      shadowOffset: {
+                        width: 0,
+                        height: 7,
+                      },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 4.5,
+                    }}
+                    duration={1500}
+                    visible={!isLoading}>
+                    <NewItemCard
+                      image_url={i.image_url}
+                      name={i.item_name}
+                      price={i.price}
+                      id={i.item_id}
+                    />
+                  </ShimmerPlaceholder>
                 );
               })}
             </ScrollView>

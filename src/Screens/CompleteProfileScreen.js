@@ -72,39 +72,12 @@ const CompleteProfileScreen = () => {
               editable={false}
               // obsecureText={true}
               setVariable={() => {}}></MyTextInput>
-            <SizedBox height={10}></SizedBox>
-
-            <View style={{flexDirection: 'row' , justifyContent: "space-evenly"}}>
-              <View style={{marginRight: 20}}>
-                <Text style={{color: 'black'}}>Pincode</Text>
-                <MyTextInput
-                  placeholder={'Pincode'}
-                  inputMode={'email'}
-                  secureTextEntry={true}
-                  variable={'hello'}
-                  // obsecureText={true}
-                  setVariable={() => {}}
-                  style={{width: 150}}
-                />
-              </View>
-              <View>
-                <Text style={{color: 'black'}}>City</Text>
-                <MyTextInput
-                  placeholder={'Indore'}
-                  inputMode={'email'}
-                  secureTextEntry={true}
-                  variable={'hello'}
-                  style={{width: 150}}
-
-                  // obsecureText={true}
-                  setVariable={() => {}}></MyTextInput>
-              </View>
-            </View>
+           
 
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>Address</Text>
             <MyTextInput
-              placeholder={'Pincode'}
+              placeholder={''}
               inputMode={'email'}
               secureTextEntry={true}
               variable={'hello'}
@@ -114,12 +87,40 @@ const CompleteProfileScreen = () => {
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>State</Text>
             <MyTextInput
-              placeholder={'State'}
+              placeholder={''}
               inputMode={'Madhya Pradesh '}
               secureTextEntry={true}
               variable={'hello'}
               // obsecureText={true}
               setVariable={() => {}}></MyTextInput>
+ <SizedBox height={10}></SizedBox>
+<View style={{flexDirection: 'row' , justifyContent: "space-evenly"}}>
+           
+              <View style={{marginRight: 20}}>
+                <Text style={{color: 'black'}}>City</Text>
+                <MyTextInput
+                  placeholder={''}
+                  inputMode={'email'}
+                  secureTextEntry={true}
+                  variable={'hello'}
+                  style={{width: 150}}
+
+                  // obsecureText={true}
+                  setVariable={() => {}}></MyTextInput>
+              </View>
+              <View style={{marginRight: 20}}>
+                <Text style={{color: 'black'}}>Pincode</Text>
+                <MyTextInput
+                  placeholder={''}
+                  inputMode={'email'}
+                  secureTextEntry={true}
+                  variable={'hello'}
+                  // obsecureText={true}
+                  setVariable={() => {}}
+                  style={{width: 150}}
+                />
+              </View>
+            </View>
             <TouchableOpacity
               onPress={() => {}}
               style={{

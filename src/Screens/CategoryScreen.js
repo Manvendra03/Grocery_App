@@ -14,35 +14,42 @@ import React, {useEffect, useState} from 'react';
 import SizedBox from '../Components/SizedBox';
 import AdvanceCard from '../Components/AdvanceCard';
 import {delay} from './HomeScreen';
-import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import NewItemCard from '../Components/NewItemCard';
+import {base_url} from '../API/BaseUrl';
+
+import LinearGradient from 'react-native-linear-gradient';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 const CategoryScreen = ({navigation}) => {
-  const [isFetched, setFetched] = useState(false);
-  
-  const [arrivals,setArrivals] = useState([
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [arrivals, setArrivals] = useState([
     {
-      img: "https://www.bigbasket.com/media/uploads/p/xxl/40015993_11-uncle-chips-spicy-treat.jpg",name :"Uncle Chips", price: "210"
+      img: 'https://www.bigbasket.com/media/uploads/p/xxl/40015993_11-uncle-chips-spicy-treat.jpg',
+      name: 'Uncle Chips',
+      price: '210',
     },
     {
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kQFwtv72JbqerZzH43IvxOn9uSA6dSEgoDs-h6KlUA&s",name :"Ruffles Chips", price: "250"
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kQFwtv72JbqerZzH43IvxOn9uSA6dSEgoDs-h6KlUA&s',
+      name: 'Ruffles Chips',
+      price: '250',
     },
     {
-      img: "https://i5.walmartimages.com/seo/Lay-s-Potato-Chips-Limon-Flavor-7-75-oz-Bag_5f090e6d-fd82-4f8a-99a3-dc41d556211e.6dcea6a65421632ac8b8621c759a61a5.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF",name :"Lays Chips", price: "210"
+      img: 'https://i5.walmartimages.com/seo/Lay-s-Potato-Chips-Limon-Flavor-7-75-oz-Bag_5f090e6d-fd82-4f8a-99a3-dc41d556211e.6dcea6a65421632ac8b8621c759a61a5.jpeg?odnHeight=640&odnWidth=640&odnBg=FFFFFF',
+      name: 'Lays Chips',
+      price: '210',
     },
-    
+
     {
-      img: "https://5.imimg.com/data5/SELLER/Default/2021/1/RV/HV/BH/121836789/bourbon-biscuit.jpg",
-      name: "bourbon",
+      img: 'https://5.imimg.com/data5/SELLER/Default/2021/1/RV/HV/BH/121836789/bourbon-biscuit.jpg',
+      name: 'bourbon',
       price: 300,
-    }
-,
+    },
     {
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd_9ZinS_cb64Gj7OnCSNEFATpQAjQdWnLABvCM2yijw&s",
-      name: "Marie Gold",
-      price: 450
-    }
-    
+      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd_9ZinS_cb64Gj7OnCSNEFATpQAjQdWnLABvCM2yijw&s',
+      name: 'Marie Gold',
+      price: 450,
+    },
   ]);
   const [imageurls, setimageurls] = useState([
     {
@@ -73,16 +80,22 @@ const CategoryScreen = ({navigation}) => {
 
   const getAdvanceList = async () => {
     try {
-      var response = await axios.get(
-        "https://fakestoreapi.com/products/category/women's clothing",
-      );
+      var response = await axios.get(base_url + '/category');
+      // console.log(response.data);
+      
+      if(response.status != 200)
+        {
+          console.log("/////////////////////////////////////////////////////")
+          console.log("/////////////////////////////////////////////////////")
+          console.log("/////////////////////////////////////////////////////")
+          console.log("Wrong status code !!!!!!!!"+response.status);
+                
+        }
 
-      let arr = response.data;
-
-      setAdvanceList(arr);
-
-      await delay(1500);
-      setFetched(true);
+      setArrivals(response.data.new_arrivals);
+      setimageurls(response.data.categories);
+      // await delay(1500);
+      setIsLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -92,9 +105,16 @@ const CategoryScreen = ({navigation}) => {
     getAdvanceList();
   }, []);
 
+  const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
+
+
   return (
-    <View >
-       <View style= {{height: Platform.OS === 'ios'? 80:50 , backgroundColor: "#009746"}}></View>
+    <View>
+      <View
+        style={{
+          height: Platform.OS === 'ios' ? 80 : 50,
+          backgroundColor: '#009746',
+        }}></View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
@@ -132,18 +152,82 @@ const CategoryScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}>
               {arrivals.map(i => {
                 return (
-                  <TouchableOpacity  onPress={()=>{
-                    navigation.navigate('SingleItemScreen')
-                 }}>
-                  <View
+                  //   <TouchableOpacity  onPress={()=>{
+                  //     navigation.navigate('SingleItemScreen')
+                  //  }}>
+                  //   <View
+                  //     style={{
+                  //       height: 200,
+                  //       width: 150,
+                  //       backgroundColor: 'white',
+                  //       borderRadius: 10,
+                  //       marginHorizontal: 6,
+                  //       alignItems: 'center',
+                  //       paddingVertical: 10,
+                  //       elevation: 10,
+
+                  //       shadowColor: 'black',
+                  //       shadowOffset: {
+                  //         width: 0,
+                  //         height: 7,
+                  //       },
+                  //       shadowOpacity: 0.3,
+                  //       shadowRadius: 4.5,
+                  //     }}>
+                  //     <View
+                  //       style={{
+                  //         height: 120,
+                  //         width: 120,
+                  //         backgroundColor: 'grey',
+                  //         marginBottom: 5,
+                  //         borderTopLeftRadius: 10,
+                  //         borderTopRightRadius: 10,
+                  //       }}>
+                  //       <Image
+                  //         source={{
+                  //           uri: i?.img,
+                  //         }}
+                  //         style={{
+                  //           height: 120,
+                  //           width: 120,
+                  //           backgroundColor: 'grey',
+                  //           borderTopLeftRadius: 10,
+                  //           borderTopRightRadius: 10,
+                  //         }}
+                  //       />
+                  //     </View>
+                  //     <Text
+                  //       numberOfLines={2}
+                  //       style={{
+                  //         width: 120,
+                  //         fontWeight: '500',
+                  //         color: 'black',
+                  //         alignSelf: 'center',
+                  //         textAlign: 'center',
+                  //       }}>
+                  //       {i.name}
+                  //     </Text>
+                  //     <Text
+                  //       style={{
+                  //         color: 'black',
+                  //         fontWeight: 'bold',
+                  //         margin: 5,
+                  //         alignItems: 'center',
+                  //       }}>
+                  //       {'$ ' + i.price}
+                  //     </Text>
+                  //   </View>
+                  //   </TouchableOpacity>
+
+                  <ShimmerPlaceholder
                     style={{
                       height: 200,
                       width: 150,
                       backgroundColor: 'white',
                       borderRadius: 10,
-                      marginHorizontal: 6,
+                      marginHorizontal: 10,
                       alignItems: 'center',
-                      paddingVertical: 10,
+                      // paddingVertical: 10,
                       elevation: 10,
 
                       shadowColor: 'black',
@@ -153,51 +237,16 @@ const CategoryScreen = ({navigation}) => {
                       },
                       shadowOpacity: 0.3,
                       shadowRadius: 4.5,
-                    }}>
-                    <View
-                      style={{
-                        height: 120,
-                        width: 120,
-                        backgroundColor: 'grey',
-                        marginBottom: 5,
-                        borderTopLeftRadius: 10,
-                        borderTopRightRadius: 10,
-                      }}>
-                      <Image
-                        source={{
-                          uri: i?.img,
-                        }}
-                        style={{
-                          height: 120,
-                          width: 120,
-                          backgroundColor: 'grey',
-                          borderTopLeftRadius: 10,
-                          borderTopRightRadius: 10,
-                        }}
-                      />
-                    </View>
-                    <Text
-                      numberOfLines={2}
-                      style={{
-                        width: 120,
-                        fontWeight: '500',
-                        color: 'black',
-                        alignSelf: 'center',
-                        textAlign: 'center',
-                      }}>
-                      {i.name}
-                    </Text>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontWeight: 'bold',
-                        margin: 5,
-                        alignItems: 'center',
-                      }}>
-                      {'$ ' + i.price}
-                    </Text>
-                  </View>
-                  </TouchableOpacity>
+                    }}
+                    duration={1500}
+                    visible={!isLoading}>
+                    <NewItemCard
+                      image_url={i.image_url}
+                      name={i.item_name}
+                      price={i.price}
+                      id={i.item_id}
+                    />
+                  </ShimmerPlaceholder>
                 );
               })}
             </ScrollView>
@@ -218,14 +267,34 @@ const CategoryScreen = ({navigation}) => {
           {imageurls.map(items => {
             return (
 
+              <ShimmerPlaceholder
+              style={ {
+                height: 160,
+                width: 160,
+                backgroundColor: 'grey',
+                borderRadius: 10,
+                marginVertical: 5,
+                elevation: 20,
+                shadowColor: 'black',
+                shadowOffset: {
+                  width: -10,
+                  height: 10,
+                },
+                shadowOpacity: 0.28,
+                shadowRadius: 5,
+              }}
+
+              duration={1000}
+              visible={!isLoading}>
+
               <TouchableOpacity
-                 onPress={()=>{ 
-                  navigation.navigate("ProductListScreen")
-                 }} 
-                 style={styles.sectionCard}>
+                onPress={() => {
+                  navigation.navigate('ProductListScreen',{cat_name: items.category_name});
+                }}
+                style={styles.sectionCard}>
                 <ImageBackground
                   source={{
-                    uri: items?.img,
+                    uri: items?.image_url,
                   }}
                   style={{
                     height: '100%',
@@ -237,13 +306,12 @@ const CategoryScreen = ({navigation}) => {
                   }}
                   imageStyle={{borderRadius: 10}}>
                   <LinearGradient
-                    colors={
-                      ['transparent',
-                    //  '#333945',
-                    //   'black', 
+                    colors={[
+                      'transparent',
+                      //  '#333945',
+                      //   'black',
                       '#1C4B35',
-                    ]
-                  }
+                    ]}
                     style={{
                       height: '100%',
                       width: '100%',
@@ -253,22 +321,25 @@ const CategoryScreen = ({navigation}) => {
                     }}>
                     <Text
                       style={{
-                        fontSize: 24,
-                        fontWeight: 'bold',
+                        fontSize: 20,
+                        paddingHorizontal: 10,
+                        fontWeight: '700',
                         color: 'white',
+                        textAlign: 'center',
                         alignSelf: 'center',
                         marginBottom: 20,
                       }}>
                       {' '}
-                      {items?.name}{' '}
+                      {items?.category_name}{' '}
                     </Text>
                   </LinearGradient>
                 </ImageBackground>
               </TouchableOpacity>
+             </ShimmerPlaceholder>
             );
           })}
         </View>
-        <SizedBox height={100} />
+        <SizedBox height={150} />
       </ScrollView>
     </View>
   );
@@ -282,7 +353,7 @@ const styles = StyleSheet.create({
     width: 160,
     backgroundColor: 'grey',
     borderRadius: 10,
-    marginVertical: 5,
+    // marginVertical: 5,
     elevation: 20,
     shadowColor: 'black',
     shadowOffset: {

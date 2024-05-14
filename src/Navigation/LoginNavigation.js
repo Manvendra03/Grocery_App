@@ -18,10 +18,11 @@ const LoginNavigation = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+            <Stack.Screen name= 'BottomBarScreen' component={BottomBarScreen} options= { {headerShown: false}}/>
+      
            <Stack.Screen name= 'LoginScreen' component={LoginScreen} options= { {headerShown: false}}/>
            <Stack.Screen name= 'SignUpScreen' component={SignUpScreen} options = {{headerShown : false}}/>
            {/*  */}
-           <Stack.Screen name= 'BottomBarScreen' component={BottomBarScreen} options= { {headerShown: false}}/>
          <Stack.Screen name= 'SingleItemScreen' component={SingleITemScreen} options = {{headerShown : false}}/>
          <Stack.Screen name= 'ProfileScreen' component={ProfileScreen}  options= { {headerShown: false}} />
           <Stack.Screen name= 'ProductListScreen' component={ProductListScreen}  options= { {headerShown: false}} />

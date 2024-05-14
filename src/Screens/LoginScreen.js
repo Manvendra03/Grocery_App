@@ -11,8 +11,24 @@ import React from 'react';
 import MyTextInput from '../Components/TextInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NavigationRouteContext } from '@react-navigation/native';
+import axios from 'axios';
 
 const LoginScreen = ({navigation}) => {
+
+
+  async function loginWithEmail()
+  {
+   const response = await axios.post('https://nbp8qssq-4090.inc1.devtunnels.ms/api/login', {
+      email: "manvendrapatidar03@gmail.com",
+      password: "monty@123"
+    });
+
+    console.log(response.data.email);
+  
+  
+  }
+
+
   return (
 
    <SafeAreaView>
@@ -87,7 +103,7 @@ const LoginScreen = ({navigation}) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={() => {loginWithEmail()}}
         style={{
           height: 50,
           marginTop: 50,
