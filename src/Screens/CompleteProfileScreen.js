@@ -8,12 +8,56 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import MyTextInput from '../Components/TextInput';
 import SizedBox from '../Components/SizedBox';
+import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 
-const CompleteProfileScreen = () => {
+
+const CompleteProfileScreen = ({navigation}) => {
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 0 : -10; // Adjust the value as per your need
+   
+
+  const route = useRoute();
+  const {uEmail,uName} = route.params;
+
+  const[pn , setpn] = useState("");
+  const [address,setAddress] = useState("");
+  const [statee,setStatee] = useState("");
+  const [city,setCity] = useState("");
+  const [pincode,setPincode] = useState(""); 
+
+  async function completeMyProfile()
+  {
+    
+    console.log("00000");
+    console.log(uEmail);
+    console.log(uName);
+  
+     
+    const response = await axios.post('https://nbp8qssq-4090.inc1.devtunnels.ms/api/com_profile',
+   {
+    name : uName,
+    email: uEmail,
+    mob_num : "9617474952",
+    address : "city",
+    city: "indore",
+    state: "mp",
+    pincode: "454552"
+  }
+);
+    console.log(response.status);
+    if(response.status = '200')
+      {
+        console.log("99999");
+        return true;
+      }
+
+   
+      return false;
+  }
+
 
   return (
     <SafeAreaView
@@ -27,7 +71,7 @@ const CompleteProfileScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
         keyboardVerticalOffset={keyboardVerticalOffset}
         style={{flex: Platform.OS === 'android' ? 1 : null}}>
-        <View  >
+        <View>
           <Text
             style={{
               fontSize: 23,
@@ -38,22 +82,29 @@ const CompleteProfileScreen = () => {
             }}>
             Complete Your Profile
           </Text>
-          <View style ={{ paddingHorizontal:15, backgroundColor: 'rgba(144, 238, 144,0.3)', borderRadius: 10 , paddingVertical :15}}>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              backgroundColor: 'rgba(144, 238, 144,0.3)',
+              borderRadius: 10,
+              paddingVertical: 15,
+            }}>
             <Text style={{color: 'black'}}>Name</Text>
             <MyTextInput
-              placeholder={'Manvendra Patidar'}
+              placeholder={uName}
               inputMode={'email'}
               secureTextEntry={true}
               variable={'hello'}
               editable={false}
               style={{borderColor: '#BABABA'}}
               // obsecureText={true}
-              setVariable={() => {}}/>
+              setVariable={() => {}}
+            />
 
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>Email Address</Text>
             <MyTextInput
-              placeholder={'manvendrapatidar03@gmail.com'}
+              placeholder={uEmail}
               inputMode={'email'}
               secureTextEntry={true}
               variable={'hello'}
@@ -64,15 +115,14 @@ const CompleteProfileScreen = () => {
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>Phone Number</Text>
             <MyTextInput
-              placeholder={'+91 9617474952'}
+              placeholder={''}
               inputMode={'numeric'}
               secureTextEntry={true}
-              style={{borderColor: '#BABABA'}}
+         
               variable={'hello'}
-              editable={false}
-              // obsecureText={true}
-              setVariable={() => {}}></MyTextInput>
-           
+              editable={true}
+          
+              setVariable={setpn}></MyTextInput>
 
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>Address</Text>
@@ -82,7 +132,7 @@ const CompleteProfileScreen = () => {
               secureTextEntry={true}
               variable={'hello'}
               // obsecureText={true}
-              setVariable={() => {}}></MyTextInput>
+              setVariable={setAddress}></MyTextInput>
 
             <SizedBox height={10}></SizedBox>
             <Text style={{color: 'black'}}>State</Text>
@@ -92,10 +142,10 @@ const CompleteProfileScreen = () => {
               secureTextEntry={true}
               variable={'hello'}
               // obsecureText={true}
-              setVariable={() => {}}></MyTextInput>
- <SizedBox height={10}></SizedBox>
-<View style={{flexDirection: 'row' , justifyContent: "space-evenly"}}>
-           
+              setVariable={setStatee}></MyTextInput>
+            <SizedBox height={10}></SizedBox>
+            <View
+              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
               <View style={{marginRight: 20}}>
                 <Text style={{color: 'black'}}>City</Text>
                 <MyTextInput
@@ -104,9 +154,8 @@ const CompleteProfileScreen = () => {
                   secureTextEntry={true}
                   variable={'hello'}
                   style={{width: 150}}
-
                   // obsecureText={true}
-                  setVariable={() => {}}></MyTextInput>
+                  setVariable={setCity}></MyTextInput>
               </View>
               <View style={{marginRight: 20}}>
                 <Text style={{color: 'black'}}>Pincode</Text>
@@ -116,13 +165,32 @@ const CompleteProfileScreen = () => {
                   secureTextEntry={true}
                   variable={'hello'}
                   // obsecureText={true}
-                  setVariable={() => {}}
+                  setVariable={setPincode}
                   style={{width: 150}}
                 />
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => {
+
+                      console.log(pn)
+                      
+                      console.log(address)
+                      
+                      console.log(statee)
+                      
+                      console.log(city)
+                      
+                      console.log(pincode)
+                       
+                     const flag = completeMyProfile();   
+                     if(flag)
+                      {
+                        navigation.navigate('LoginScreen');
+                      } 
+                     
+                     // completeProfile();                      
+              }}
               style={{
                 height: 50,
                 marginTop: 50,

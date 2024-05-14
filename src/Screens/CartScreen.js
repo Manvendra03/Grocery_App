@@ -9,60 +9,150 @@ import {
   Platform,
   Dimensions,
   useWindowDimensions,
+  Alert,
 } from 'react-native';
 import CartCard from '../Components/CartCard';
 import axios from 'axios';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 import SizedBox from '../Components/SizedBox';
 import cartList, {getCartList} from '../Data/MyCartItems';
-import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused, useRoute} from '@react-navigation/native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Counting from '../Components/Counting ';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CartScreen = ({navigation}) => {
   const {width, height} = useWindowDimensions();
-  const [cartItem, setcartItem] = useState(cartList);
+  // const [cartItem, setcartItem] = useState(cartList);
+  
+  const [d,setD] = useState(0);
+  const [t,setT] = useState(0);
+  
+  const [Dis,setDis] = useState(0);
+  
+  const [ta,setTa] = useState(0);
+
+   const [userID , setUserId] = useState(0);
+
+
   const isFocusedScreen = useIsFocused();
-  const [openBill , setOpenBill ] = useState(false);
-  const arr = [1, 23, 4, 5, 6, 6, 5, 3, 3, 2];
-  
-  const fetchCartItem = () => {
-    setcartItem(cartList);
-  };
-   
-  
-  const [fruits, setFruits] = useState([
-    {
-      img: 'https://cdn.pixabay.com/photo/2016/11/18/13/47/apple-1834639_1280.jpg',
-      name: 'Apple',
-      price: '210 /Kg',
-    },
-    {
-      img: "https://grosav.com/assets/img/items/15985275313rtzeTRNjZ.jpg",
-      name: 'Banana',
-      price: '20 / KG',
-    },
-    // {
-    //   img: 'https://www.mashed.com/img/gallery/apparently-one-pineapple-is-not-a-single-fruit-heres-why/intro-1694898682.jpg',
-    //   name: 'PineApple',
-    //   price: '210 / 1psc',
-    // },
+  const [openBill, setOpenBill] = useState(false);
 
-    {
-      img: 'https://qph.cf2.quoracdn.net/main-qimg-fc794ca1a36edd0a822b67e7a3cbe7df-lq',
-      name: 'Strawberrys',
-      price: '120 / KG',
-    },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
 
+  async function placeMyOrder()
+  {
+    await getUserId();
+    const response = await axios.post('https://nbp8qssq-4090.inc1.devtunnels.ms/api/placeorder', {
+        "customer_id": userID,
+        "total_amount": ta,
+        "order_details": cartItems.length
+},);
 
-
-
-  isFocusedScreen
-    ? () => {
-        fetchCartItem();
+     console.log("ORDER PALCED --------- >>>>>> ");
+     console.log(response.data);
+     if(response.status == 200)
+      {
+     Alert.alert('Order Placed', 'Order has been placed with order Id : '+ response.data.order_id);
+        
       }
-    : {};
+      else
+      {
+        console.log("status code eeeee" + response.status)
+      }
+  }
+
+  const getUserId = async () => {
+    console.log("----")
+    try {
+      const value = await AsyncStorage.getItem('USER');
+      console.log(value);
+      setUserId(value);
+       // Return an empty array if no items are 
+    } catch (error) {
+      console.error('Error retrieving cart items:', error);
+      return []; // Return an empty array on error
+    }
+  };
+  
+  async function getMyBill()
+  {
+    console.log("??????>>>");
+    
+    // const Jobj = JSON.stringify(arrayOfIdsWithQuantity)
+    // console.log(Jobj);
+   const response = await axios.post('https://nbp8qssq-4090.inc1.devtunnels.ms/api/calculate_order', {
+           order : arrayOfIdsWithQuantity
+    },);
+
+    console.log(response.data);
+    
+    if(response.status == 200)
+      {
+        setD(response.data.delivery_Charge);
+        setT(response.data.total_Amount);
+        setTa(response.data.total_to_pay);
+        setDis(response.data.discount);
+        setOpenBill(true);
+
+      }
+    console.log("??????");
+
+  }
+  
+
+
+  // useEffect(()=>{
+  // retrieveCartItems();
+  // },)
+
+  useFocusEffect(
+    React.useCallback(() => {
+      retrieveCartItems();
+      setOpenBill(false);
+    }, []),
+  );
+
+  // Function to retrieve cart items from AsyncStorage
+  const retrieveCartItems = async () => {
+    try {
+      const value = await AsyncStorage.getItem('CART');
+      if (value !== null) {
+        setCartItems(JSON.parse(value));
+      }
+    } catch (error) {
+      console.error('Error retrieving cart items:', error);
+    }
+  };
+
+  const arrayOfIdsWithQuantity = cartItems.map(obj => ({
+    item_id: obj.item_id,
+    quantity: 1, // Set default quantity to 1 or adjust as needed
+  }));
+
+  const removeItemById = idToRemove => {
+    console.log('Removing.....' + idToRemove);
+    const updatedList = [];
+    for (let i = 0; i < cartItems.length; i++) {
+      if (cartItems[i].item_id !== idToRemove) {
+        updatedList.push(cartItems[i]);
+      }
+    }
+
+    setCartItems(updatedList);
+  };
+
+  // isFocusedScreen
+  //   ? () => {
+  //       fetchCartItem();
+  //     }
+  //   : {};
 
   return (
     <View
@@ -105,13 +195,13 @@ const CartScreen = ({navigation}) => {
             borderRadius: 20,
             marginTop: Platform.OS === 'ios' ? -35 : -40,
           }}>
-          {fruits?.map(i => {
+          {cartItems?.map(i => {
             return (
               <TouchableOpacity
-             
-                 onPress={()=>{navigation.navigate("SingleItemScreen")}}
-             
-                 style={{
+                onPress={() => {
+                  navigation.navigate('SingleItemScreen', {item_id: i.item_id});
+                }}
+                style={{
                   height: 130,
                   margin: 10,
                   // backgroundColor: '#E2FFD3',
@@ -131,7 +221,7 @@ const CartScreen = ({navigation}) => {
                   }}>
                   <Image
                     source={{
-                      uri: i.img,
+                      uri: i.image_url,
                     }}
                     style={{
                       height: '100%',
@@ -149,7 +239,7 @@ const CartScreen = ({navigation}) => {
                       color: 'black',
                       lineHeight: 25,
                     }}>
-                    {i.name}
+                    {i.item_name}
                   </Text>
                   <Text
                     style={{
@@ -168,65 +258,148 @@ const CartScreen = ({navigation}) => {
                       lineHeight: 20,
                       marginBottom: 10,
                     }}>
-                    Weight : 10Kg
+                    Weight : {i.unit}
                   </Text>
                   <Counting />
                 </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    removeItemById(i.item_id);
+                  }}
+                  style={{
+                    height: 15,
+                    width: 15,
+                    position: 'absolute',
+                    top: 15,
+                    right: 15,
+                  }}>
+                  <Image
+                    source={require('../assets/close.png')}
+                    style={{height: 15, width: 15}}></Image>
+                </TouchableOpacity>
               </TouchableOpacity>
             );
           })}
-        
-        
-        {
-     openBill === false? <TouchableOpacity onPress={()=>{setOpenBill(true)}} style ={{height: 50,marginVertical: 10 ,borderRadius: 10 , backgroundColor: "#6DBD5F" , justifyContent: "center" , alignItems: "center"}}>
-                    <Text style ={{fontWeight: "800" , fontSize: 18 , color: "white"}}>Check Out</Text>
-            </TouchableOpacity>   : <View><View
-            style={{
-              height: 150,
-              width: '100%',
-              backgroundColor: '#D4D4D4',
-              borderRadius: 20,
-              paddingVertical: 5,
-              paddingHorizontal: 20,
-              justifyContent : "space-evenly"
-            }}>
-            {/* //total Amount */}
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',paddingHorizontal: 30, }}>
-              <Text style={{color: 'black', fontWeight: '700'}}>Total</Text>
-              <Text style={{color: 'black', fontWeight: '700'}}>399</Text>
-            </View>
-            {/* // Delivery charges */}
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',paddingHorizontal: 30,}}>
-              <Text style={{color: 'black', fontWeight: '700'}}>
-                Delivery charges
-              </Text>
-              <Text style={{color: 'black', fontWeight: '700'}}>50</Text>
-            </View>
-            {/* // discount charges */}
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',paddingHorizontal: 30,}}>
-              <Text style={{color: 'black', fontWeight: '700'}}>
-                Discount
-              </Text>
-              <Text style={{color: 'black', fontWeight: '700'}}>10%</Text>
-            </View>
 
-            <View style ={{height: 1 , width: "100%" , backgroundColor: "black"}}></View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between',paddingHorizontal: 30,}}>
-              <Text style={{color: 'black', fontWeight: '700'}}>
-                Total Amount
+          {openBill === false ? (
+            <TouchableOpacity
+              onPress={async () => {
+                console.log('999000999');
+
+                console.log('Done --- >>>>>');
+
+                try {
+                  // Update cart items in AsyncStorage
+                  await AsyncStorage.setItem('CART', JSON.stringify(cartItems));
+                } catch (error) {
+                  console.error('Error adding item to cart:', error);
+                  Alert.alert(
+                    'Error',
+                    'Failed to gernrate bill. Please try again.',
+                  );
+                }
+
+                console.log(arrayOfIdsWithQuantity);
+                
+                getMyBill();
+             
+              }}
+              style={{
+                height: 50,
+                marginVertical: 10,
+                borderRadius: 10,
+                backgroundColor: '#6DBD5F',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{fontWeight: '800', fontSize: 18, color: 'white'}}>
+                Check Out
               </Text>
-              <Text style={{color: 'black', fontWeight: '700'}}>200</Text>
+            </TouchableOpacity>
+          ) : (
+            <View>
+              <View
+                style={{
+                  height: 150,
+                  width: '100%',
+                  backgroundColor: '#D4D4D4',
+                  borderRadius: 20,
+                  paddingVertical: 5,
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-evenly',
+                }}>
+                {/* //total Amount */}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 30,
+                  }}>
+                  <Text style={{color: 'black', fontWeight: '700'}}>Total</Text>
+                  <Text style={{color: 'black', fontWeight: '700'}}>{t}</Text>
+                </View>
+                {/* // Delivery charges */}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 30,
+                  }}>
+                  <Text style={{color: 'black', fontWeight: '700'}}>
+                    Delivery charges
+                  </Text>
+                  <Text style={{color: 'black', fontWeight: '700'}}>{d}</Text>
+                </View>
+                {/* // discount charges */}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 30,
+                  }}>
+                  <Text style={{color: 'black', fontWeight: '700'}}>
+                    Discount
+                  </Text>
+                  <Text style={{color: 'black', fontWeight: '700'}}>{Dis}</Text>
+                </View>
+
+                <View
+                  style={{
+                    height: 1,
+                    width: '100%',
+                    backgroundColor: 'black',
+                  }}></View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 30,
+                  }}>
+                  <Text style={{color: 'black', fontWeight: '700'}}>
+                    Total Amount
+                  </Text>
+                  <Text style={{color: 'black', fontWeight: '700'}}>{ta}</Text>
+                </View>
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  setOpenBill(false);
+                  placeMyOrder(); 
+                }}
+                style={{
+                  height: 50,
+                  marginVertical: 10,
+                  borderRadius: 10,
+                  backgroundColor: '#6DBD5F',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text style={{fontWeight: '800', fontSize: 18, color: 'white'}}>
+                  Buy Now
+                </Text>
+              </TouchableOpacity>
             </View>
-          </View>
-           <TouchableOpacity onPress={ ()=>{setOpenBill(false)}} style ={{height: 50,marginVertical: 10 ,borderRadius: 10 , backgroundColor: "#6DBD5F" , justifyContent: "center" , alignItems: "center"}}>
-                    <Text style ={{fontWeight: "800" , fontSize: 18 , color: "white"}}>Buy Now</Text>
-            </TouchableOpacity> 
-            </View>
-           }
+          )}
           <SizedBox height={100} />
         </View>
       </ScrollView>

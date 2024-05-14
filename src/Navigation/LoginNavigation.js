@@ -16,10 +16,9 @@ const Stack = createNativeStackNavigator();
 
 const LoginNavigation = () => {
     return (
-        <NavigationContainer>
+       
             <Stack.Navigator>
-            <Stack.Screen name= 'BottomBarScreen' component={BottomBarScreen} options= { {headerShown: false}}/>
-      
+            
            <Stack.Screen name= 'LoginScreen' component={LoginScreen} options= { {headerShown: false}}/>
            <Stack.Screen name= 'SignUpScreen' component={SignUpScreen} options = {{headerShown : false}}/>
            {/*  */}
@@ -28,10 +27,11 @@ const LoginNavigation = () => {
           <Stack.Screen name= 'ProductListScreen' component={ProductListScreen}  options= { {headerShown: false}} />
           <Stack.Screen name= 'CompleteProfileScreen' component={CompleteProfileScreen}  options= { {headerShown: false}} />
           <Stack.Screen name= 'OrderHistoryScreen' component={OrderHistory}  options= { {headerShown: false}} />
-  
+          <Stack.Screen name= 'BottomBarScreen' component={BottomBarScreen} options= { {headerShown: false}}/>
+      
      
         </Stack.Navigator>
-        </NavigationContainer>
+      
       )
 }
 

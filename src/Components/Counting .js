@@ -15,8 +15,9 @@ let [count, setCount] = useState(1);
 
     const sub = ()=> {
 
-        if(count == 0 )
+        if(count == 1 )
          {
+            
              return;
          }
          else

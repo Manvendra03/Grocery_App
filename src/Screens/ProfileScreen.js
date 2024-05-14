@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SizedBox from '../Components/SizedBox';
 
 import MyTextInput from '../Components/TextInput';
 import ProfileOptions from '../Components/ProfileOptions';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -20,6 +22,15 @@ const ProfileScreen = () => {
   const [showCard, setShowCard] = useState(false);
   const [showSetting, setShowSetting] = useState(false);
   const [isEdit,setIsEdit] = useState(false);
+  const [userId,setUserId] = useState(2);
+  const [name,setName] = useState("Manvendra Patidar");
+  const [email,setEmail] = useState("manvendra@gmail.com");
+  const [add,setAdd] = useState("Indore");  
+  const [mob,setMob] = useState("9617474952");  
+  
+   
+  
+
   const [options, setoption] = useState([
     {
       icon: require('../assets/profile_icons/user-2.png'),
@@ -42,13 +53,13 @@ const ProfileScreen = () => {
         navigation.navigate('Cart');
       },
     },
-    {
-      icon: require('../assets/profile_icons/bar-chart.png'),
-      tittle: 'Order History',
-      functionn: () => {
-        navigation.navigate('OrderHistoryScreen');
-      },
-    },
+    // {
+    //   icon: require('../assets/profile_icons/bar-chart.png'),
+    //   tittle: 'Order History',
+    //   functionn: () => {
+    //     navigation.navigate('OrderHistoryScreen');
+    //   },
+    // },
     {icon: require('../assets/profile_icons/setting.png'), tittle: 'setting', functionn: () => {
       setShowSetting(true);
     },},
@@ -61,6 +72,46 @@ const ProfileScreen = () => {
       },
     },
   ]);
+
+ useEffect(()=>{
+  getUserId();
+  getDetails();
+ },[])
+
+  const getUserId = async () => {
+    console.log("----")
+    try {
+      const value = await AsyncStorage.getItem('USER');
+      console.log(value);
+       // Return an empty array if no items are 
+    } catch (error) {
+      console.error('Error retrieving cart items:', error);
+      return []; // Return an empty array on error
+    }
+  };
+
+ async function getDetails()
+  {
+    const response = await axios.get('https://nbp8qssq-4090.inc1.devtunnels.ms/api/fetch_profile/'+userId);
+    
+    console.log(response.data);
+    if(response.status == 200)
+      {
+        setEmail(response.data.email);
+        setName(response.data.name);
+        setAdd(response.data.city);
+        setMob(response.data.mob_num);
+      }
+  }
+
+  
+  useFocusEffect(
+    React.useCallback(() => {
+      
+    }, []),
+  );
+
+
   return (
     <View style={{height: '100%', width: '100%'}}>
       {/* <AppBar/> */}
@@ -113,10 +164,10 @@ const ProfileScreen = () => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <View>
               <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-                Manvendra Patidar
+                {name}
               </Text>
               <Text style={{fontSize: 12, fontWeight: '500', color: 'grey'}}>
-                Android Developer
+                {add}
               </Text>
             </View>
           </TouchableOpacity>
@@ -198,7 +249,7 @@ const ProfileScreen = () => {
               }}
             />
             <MyTextInput
-              placeholder={'Manvendra Patidar'}
+              placeholder={name}
               inputMode={'email'}
               secureTextEntry={true}
               variable={'hello'}
@@ -210,7 +261,7 @@ const ProfileScreen = () => {
             />
 
             <MyTextInput
-              placeholder={'+91 9617474953'}
+              placeholder={mob}
               inputMode={'numeric'}
               secureTextEntry={true}
               variable={'hello'}
@@ -223,7 +274,7 @@ const ProfileScreen = () => {
             />
 
             <MyTextInput
-              placeholder={'manvendrapatidar@gmail.com'}
+              placeholder={email}
               inputMode={'email'}
               secureTextEntry={true}
               variable={'hello'}
@@ -235,7 +286,7 @@ const ProfileScreen = () => {
             />
 
             <MyTextInput
-              placeholder={'ward no. 3 gulzara dhamnod '}
+              placeholder={add}
               inputMode={'email'}
               secureTextEntry={true}
               variable={'hello'}
